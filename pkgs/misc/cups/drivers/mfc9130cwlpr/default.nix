@@ -11,6 +11,7 @@
 , pkgsi686Linux
 }:
 
+
 stdenv.mkDerivation rec {
   pname = "mfc9130cwlpr";
   version = "1.1.2-1";

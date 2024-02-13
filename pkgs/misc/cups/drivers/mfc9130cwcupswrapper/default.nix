@@ -6,18 +6,19 @@
 , coreutils
 , gnugrep
 , gnused
-, mfc9140cdnlpr
+, mfc9130cwlpr
 , pkgsi686Linux
 , psutils
 }:
 
 stdenv.mkDerivation rec {
-  pname = "mfc9140cdncupswrapper";
+  pname = "mfc9130cwcupswrapper";
   version = "1.1.4-0";
 
   src = fetchurl {
-    url = "https://download.brother.com/welcome/dlf100407/${pname}-${version}.i386.deb";
-    sha256 = "18aramgqgra1shdhsa75i0090hk9i267gvabildwsk52kq2b96c6";
+          #https://download.brother.com/welcome/dlf100412/mfc9130cwcupswrapper-1.1.4-0.i386.deb
+    url = "https://download.brother.com/welcome/dlf100412/${pname}-${version}.i386.deb";
+    sha256 = "4ecd12444e0eec9e9e0d15a1c37917b89a118f8e6e3685e83d8bbfe7b4bc92c1";
   };
 
   unpackPhase = ''
@@ -32,17 +33,17 @@ stdenv.mkDerivation rec {
   dontBuild = true;
 
   installPhase = ''
-    lpr=${mfc9140cdnlpr}/opt/brother/Printers/mfc9140cdn
-    dir=$out/opt/brother/Printers/mfc9140cdn
+    lpr=${mfc9130cwlpr}/opt/brother/Printers/mfc9130cw
+    dir=$out/opt/brother/Printers/mfc9130cw
 
     interpreter=${pkgsi686Linux.glibc.out}/lib/ld-linux.so.2
     patchelf --set-interpreter "$interpreter" "$dir/cupswrapper/brcupsconfpt1"
 
-    substituteInPlace $dir/cupswrapper/cupswrappermfc9140cdn \
+    substituteInPlace $dir/cupswrapper/cupswrappermfc9130cw \
       --replace "mkdir -p /usr" ": # mkdir -p /usr" \
-      --replace '/opt/brother/''${device_model}/''${printer_model}/lpd/filter''${printer_model}' "$lpr/lpd/filtermfc9140cdn" \
-      --replace '/usr/share/ppd/Brother/brother_''${printer_model}_printer_en.ppd' "$dir/cupswrapper/brother_mfc9140cdn_printer_en.ppd" \
-      --replace '/usr/share/cups/model/Brother/brother_''${printer_model}_printer_en.ppd' "$dir/cupswrapper/brother_mfc9140cdn_printer_en.ppd" \
+      --replace '/opt/brother/''${device_model}/''${printer_model}/lpd/filter''${printer_model}' "$lpr/lpd/filtermfc9130cw" \
+      --replace '/usr/share/ppd/Brother/brother_''${printer_model}_printer_en.ppd' "$dir/cupswrapper/brother_mfc9130cw_printer_en.ppd" \
+      --replace '/usr/share/cups/model/Brother/brother_''${printer_model}_printer_en.ppd' "$dir/cupswrapper/brother_mfc9130cw_printer_en.ppd" \
       --replace '/opt/brother/Printers/''${printer_model}/' "$lpr/" \
       --replace 'nup="psnup' "nup=\"${psutils}/bin/psnup" \
       --replace '/usr/bin/psnup' "${psutils}/bin/psnup"
@@ -50,16 +51,16 @@ stdenv.mkDerivation rec {
     mkdir -p $out/lib/cups/filter
     mkdir -p $out/share/cups/model
 
-    ln $dir/cupswrapper/cupswrappermfc9140cdn $out/lib/cups/filter
-    ln $dir/cupswrapper/brother_mfc9140cdn_printer_en.ppd $out/share/cups/model
+    ln $dir/cupswrapper/cupswrappermfc9130cw $out/lib/cups/filter
+    ln $dir/cupswrapper/brother_mfc9130cw_printer_en.ppd $out/share/cups/model
 
-    sed -n '/!ENDOFWFILTER!/,/!ENDOFWFILTER!/p' "$dir/cupswrapper/cupswrappermfc9140cdn" | sed '1 br; b; :r s/.*/printer_model=mfc9140cdn; cat <<!ENDOFWFILTER!/'  | bash > $out/lib/cups/filter/brother_lpdwrapper_mfc9140cdn
-    sed -i "/#! \/bin\/sh/a PATH=${lib.makeBinPath [ coreutils gnused gnugrep ]}:\$PATH" $out/lib/cups/filter/brother_lpdwrapper_mfc9140cdn
-    chmod +x $out/lib/cups/filter/brother_lpdwrapper_mfc9140cdn
+    sed -n '/!ENDOFWFILTER!/,/!ENDOFWFILTER!/p' "$dir/cupswrapper/cupswrappermfc9130cw" | sed '1 br; b; :r s/.*/printer_model=mfc9130cw; cat <<!ENDOFWFILTER!/'  | bash > $out/lib/cups/filter/brother_lpdwrapper_mfc9130cw
+    sed -i "/#! \/bin\/sh/a PATH=${lib.makeBinPath [ coreutils gnused gnugrep ]}:\$PATH" $out/lib/cups/filter/brother_lpdwrapper_mfc9130cw
+    chmod +x $out/lib/cups/filter/brother_lpdwrapper_mfc9130cw
     '';
 
   meta = with lib; {
-    description = "Brother MFC-9140CDN CUPS wrapper driver";
+    description = "Brother MFC-9130CW CUPS wrapper driver";
     homepage = "http://www.brother.com/";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.gpl2Plus;
