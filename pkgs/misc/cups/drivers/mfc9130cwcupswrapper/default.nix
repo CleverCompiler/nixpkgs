@@ -16,7 +16,6 @@ stdenv.mkDerivation rec {
   version = "1.1.4-0";
 
   src = fetchurl {
-          #https://download.brother.com/welcome/dlf100412/mfc9130cwcupswrapper-1.1.4-0.i386.deb
     url = "https://download.brother.com/welcome/dlf100412/${pname}-${version}.i386.deb";
     sha256 = "4ecd12444e0eec9e9e0d15a1c37917b89a118f8e6e3685e83d8bbfe7b4bc92c1";
   };
@@ -65,6 +64,6 @@ stdenv.mkDerivation rec {
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.gpl2Plus;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ hexa ];
+    maintainers = with maintainers; [ CleverCompiler ];
   };
 }

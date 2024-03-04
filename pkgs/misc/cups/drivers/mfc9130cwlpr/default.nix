@@ -17,7 +17,6 @@ stdenv.mkDerivation rec {
   version = "1.1.2-1";
 
   src = fetchurl {
-          #https://download.brother.com/welcome/dlf100410/mfc9130cwlpr-1.1.2-1.i386.deb
     url = "https://download.brother.com/welcome/dlf100410/${pname}-${version}.i386.deb";
     sha256 = "6ea12c777fd19735767757e977591d8c51353ccda7b8e4af130cc48aee85736d";
   };
@@ -70,7 +69,7 @@ stdenv.mkDerivation rec {
     homepage = "http://www.brother.com/";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.unfree;
-    maintainers = with maintainers; [ hexa ];
+    maintainers = with maintainers; [ CleverCompiler ];
     platforms = [ "i686-linux" "x86_64-linux" ];
   };
 }
