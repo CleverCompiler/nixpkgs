@@ -1,7 +1,6 @@
 { lib
 , stdenv
 , fetchFromGitHub
-, fetchpatch
 , installShellFiles
 , rustPlatform
 , libiconv
@@ -11,29 +10,27 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "atuin";
-  version = "18.0.0";
+  version = "18.1.0";
 
   src = fetchFromGitHub {
     owner = "atuinsh";
     repo = "atuin";
     rev = "v${version}";
-    hash = "sha256-2nBaGoaTd1TGm8aZnrNA66HkW7+OrD6gOmj+uSFz020=";
+    hash = "sha256-ddj8vHFTRBzeueSvY9kS1ZIcAID8k3MXrQkUVt04rQg=";
   };
-
-  patches = [
-    # https://github.com/atuinsh/atuin/pull/1694
-    (fetchpatch {
-      name = "0001-atuin_src_command_client_search_interactive.rs.patch";
-      url = "https://github.com/atuinsh/atuin/commit/6bc38f4cf3c8d2b6fbd135998a4e64e6abfb2566.patch";
-      hash = "sha256-pUiuECiAmq7nmKO/cOHZ1V5Iy3zDzZyBNNCH7Czo/NA=";
-    })
-  ];
 
   # TODO: unify this to one hash because updater do not support this
   cargoHash =
     if stdenv.isLinux
-    then "sha256-Y+49R/foid+V83tY3bqf644OkMPukJxg2/ZVfJxDaFg="
-    else "sha256-gT2JRzBAF4IsXVv1Hvo6kr9qrNE/3bojtULCx6YawhA=";
+    then "sha256-LKHBXm9ZThX96JjxJb8d7cRdhWL1t/3aG3Qq1TYBC74="
+    else "sha256-RSkC062XB5zy3lmI0OQhJfJ6FqFWXhpMPNIIqbrrlso=";
+
+  # atuin's default features include 'check-updates', which do not make sense
+  # for distribution builds. List all other default features.
+  buildNoDefaultFeatures = true;
+  buildFeatures = [
+    "client" "sync" "server" "clipboard"
+  ];
 
   nativeBuildInputs = [ installShellFiles ];
 
@@ -60,7 +57,7 @@ rustPlatform.buildRustPackage rec {
     "--skip=registration"
     # No such file or directory (os error 2)
     "--skip=sync"
-    # further failing tests
+    # PermissionDenied (Operation not permitted)
     "--skip=change_password"
     "--skip=multi_user_test"
   ];

@@ -5,14 +5,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "checkov";
-  version = "3.2.8";
+  version = "3.2.36";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "bridgecrewio";
     repo = "checkov";
     rev = "refs/tags/${version}";
-    hash = "sha256-Hd1YOzIH6v8N/oP2cJRUv6OkgOv9aSe7nkvzpsCN3rc=";
+    hash = "sha256-Of09iIRON1YLdHjmRVxerTlvUff8I8G5m+Y3pRBfRnY=";
   };
 
   patches = [
@@ -20,6 +20,8 @@ python3.pkgs.buildPythonApplication rec {
   ];
 
   pythonRelaxDeps = [
+    "boto3"
+    "botocore"
     "bc-detect-secrets"
     "bc-python-hcl2"
     "dpath"
