@@ -3657,6 +3657,13 @@
     githubId = 848609;
     name = "Michael Bishop";
   };
+  clevercompiler = {
+    email = "dchrist@clevercompiler.com";
+    matrix = "@clevercompiler:jupiterbroadcasting.com";
+    github = "CleverCompiler";
+    githubId = 2355250;
+    name = "Dan Christ";
+  };
   clkamp = {
     email = "c@lkamp.de";
     github = "clkamp";
